@@ -60,7 +60,12 @@ int main(void)
 
 
     //--------Start Screen---------------
-
+    // init heart color
+    Color heartRed = {212, 46, 18, 255};
+    // init heart.png
+    Image heart_image = LoadImage("images/heart.png");
+    Texture2D heart_texture = LoadTextureFromImage(heart_image);
+    UnloadImage(heart_image);
     //-------Play Screen-----------------
 
 
@@ -157,7 +162,11 @@ int main(void)
         }
         case StartScreen:
         {
-
+            ClearBackground(heartRed);
+            // render heart texture
+            DrawTexture(heart_texture, (screenWidth/2)-(heart_texture.width/2), (screenHeight/2)-(heart_texture.height/2), WHITE);
+            // CPR SIM text
+            DrawText("CPR_SIMULATOR", screenWidth/2, 5, 30, WHITE);
         }
         case PlayScreen:
         {
