@@ -40,6 +40,8 @@ int main(void)
     InitAudioDevice();
 
     //------Splash Screen---------------
+    // init LED DISPLAY font
+    Font fontLCD = LoadFontEx("fonts/RedHand.ttf", 100, 0 ,250);
     // TREX init
     Image TREX_image = LoadImage("images/TREX.png");
     Texture2D TREX_texture = LoadTextureFromImage(TREX_image);
@@ -60,12 +62,14 @@ int main(void)
 
 
     //--------Start Screen---------------
+    // init Start Screen stages
+    int startScreenStage = 0;
     // init heart color
     Color heartRed = {212, 46, 18, 255};
     // init heart.png
     Image heart_image = LoadImage("images/heart.png");
     Texture2D heart_texture = LoadTextureFromImage(heart_image);
-    UnloadImage(heart_image);
+    
     //-------Play Screen-----------------
 
 
@@ -133,7 +137,15 @@ int main(void)
         case StartScreen:
         {
             UpdateMusicStream(tokyocafe_wav);
+
+            if(startScreenStage == 0)
+            {
+                ImageResize(&heart_image, 500,500);
+                GetFrameTime() += 5;
+
+            }
             break;
+
         }
         case PlayScreen:
         {
@@ -150,14 +162,17 @@ int main(void)
         case SplashScreen:
         {
             // Top Text render
-            DrawText("TREX Programs presents.....", 5, topText_yaxis, 50, ColorAlpha(BLACK, top_botText_alpha));
+            
+            DrawTextEx(fontLCD, "TREX programs presents......", (Vector2){5.0f, topText_yaxis}, 50, 2, BLACK);
             // TREX texture render
             DrawTexture(TREX_texture, (screenWidth/2)-(TREX_texture.width/2), (screenHeight/2) - (TREX_texture.height/2), ColorAlpha(WHITE, imageTREX_alpha));
             DrawText("Press SPACE to continue", 5, (screenHeight/2), 30, ColorAlpha(BLACK, spaceText_alpha));
+
+            
             // bottom text render
             int productionLength = MeasureText(".....A TREX Programs production", 50);                
-            DrawText(".....A TREX Programs production", screenWidth-(productionLength+5), bottomText_yaxis, 50, ColorAlpha(BLACK, top_botText_alpha));
             
+            DrawTextEx(fontLCD, ".......A TREX Programs production", (Vector2){screenWidth-(productionLength+5), bottomText_yaxis}, 50, 2, ColorAlpha(BLACK, top_botText_alpha));
             break;
         }
         case StartScreen:
@@ -166,7 +181,9 @@ int main(void)
             // render heart texture
             DrawTexture(heart_texture, (screenWidth/2)-(heart_texture.width/2), (screenHeight/2)-(heart_texture.height/2), WHITE);
             // CPR SIM text
-            DrawText("CPR_SIMULATOR", screenWidth/2, 5, 30, WHITE);
+            int cprSIMtextSize = 30;
+            int cprSIMtextLength = MeasureText("CPR_SIMULATOR", cprSIMtextSize);
+            DrawText("CPR_SIMULATOR", screenWidth/2-(cprSIMtextLength/2), 5, cprSIMtextSize, WHITE);
         }
         case PlayScreen:
         {
@@ -175,6 +192,7 @@ int main(void)
         }
         EndDrawing();
     }
+    UnloadImage(heart_image);
     CloseAudioDevice();
     CloseWindow();
 
