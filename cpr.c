@@ -41,11 +41,12 @@ int main(void)
 
     //------Splash Screen---------------
     // init LED DISPLAY font
-    Font fontLCD = LoadFontEx("fonts/RedHand.ttf", 100, 0 ,250);
+    Font fontLCD = LoadFontEx("fonts/Pasta.ttf", 100, 0 ,250);
     // TREX init
-    Image TREX_image = LoadImage("images/TREX.png");
-    Texture2D TREX_texture = LoadTextureFromImage(TREX_image);
-    UnloadImage(TREX_image);
+    Image cat3_image = LoadImage("images/cat3.png");
+    ImageResize(&cat3_image, 900, 600);
+    Texture2D cat3_texture = LoadTextureFromImage(cat3_image);
+    UnloadImage(cat3_image);
     // alpha levels
     float imageTREX_alpha = 0.0f;
     float spaceText_alpha = 0.0f;
@@ -140,8 +141,7 @@ int main(void)
 
             if(startScreenStage == 0)
             {
-                ImageResize(&heart_image, 500,500);
-                GetFrameTime() += 5;
+                
 
             }
             break;
@@ -161,18 +161,18 @@ int main(void)
         {
         case SplashScreen:
         {
-            // Top Text render
-            
-            DrawTextEx(fontLCD, "TREX programs presents......", (Vector2){5.0f, topText_yaxis}, 50, 2, BLACK);
             // TREX texture render
-            DrawTexture(TREX_texture, (screenWidth/2)-(TREX_texture.width/2), (screenHeight/2) - (TREX_texture.height/2), ColorAlpha(WHITE, imageTREX_alpha));
+            DrawTexture(cat3_texture, (screenWidth/2)-(cat3_texture.width/2), (screenHeight/2) - (cat3_texture.height/2), ColorAlpha(WHITE, imageTREX_alpha));
+            // Top Text render            
+            DrawTextEx(fontLCD, "TREX programs presents......", (Vector2){5.0f, topText_yaxis}, 50, 2, BLACK);
+            
             DrawText("Press SPACE to continue", 5, (screenHeight/2), 30, ColorAlpha(BLACK, spaceText_alpha));
 
             
             // bottom text render
             int productionLength = MeasureText(".....A TREX Programs production", 50);                
             
-            DrawTextEx(fontLCD, ".......A TREX Programs production", (Vector2){screenWidth-(productionLength+5), bottomText_yaxis}, 50, 2, ColorAlpha(BLACK, top_botText_alpha));
+            DrawTextEx(fontLCD, "....A TREX Programs production", (Vector2){screenWidth-(productionLength+5), bottomText_yaxis}, 50, 2, ColorAlpha(BLACK, top_botText_alpha));
             break;
         }
         case StartScreen:
